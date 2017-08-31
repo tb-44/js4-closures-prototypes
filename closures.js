@@ -14,19 +14,11 @@ function outer() {
   closure over the name variable. Invoke outer saving the return value into
   another variable called 'inner'. */
   
-  // Code Here
-  
+ var inner = outer();
+
   //Once you do that, invoke inner.
   
-  //Code Here
-  
-  
-  
-  
-  
-  
-  
-  
+  inner();
   
   
   /******************************************************************************\
@@ -50,14 +42,8 @@ function outer() {
   (HINT: You will need to pass in arguments to both function invocations)
   */
   
-    //Code Here
-  
-  
-  
-  
-  
-  
-  
+   var callJake = callFriend('Jake');
+   dial('435-555-9248');
   
   
   /******************************************************************************\
@@ -68,23 +54,21 @@ function outer() {
   /* Write a function called makeCounter that makes the following code work
   properly. */
   
-  //Code Here
+  function makeCounter() {
+    var result = 0
+    function counter() {
+    return result += 1;
+    }
+   return counter
+ }
   
   //Uncomment this once you make your function
-  //   var count = makeCounter();
-  //   count(); // 1
-  //   count(); // 2
-  //   count(); // 3
-  //   count(); // 4
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  var count = makeCounter();
+  count(); // 1
+  count(); // 2
+  count(); // 3
+  count(); // 4
+
   
   /******************************************************************************\
       #PROBLEM-04
@@ -101,29 +85,23 @@ function outer() {
   */
   
   function counterFactory(value) {
-  
-    // Code here.
-  
-  
     return {
-
+      inc: function(){
+        value += 1;
+        return value;
+      },
+      dec: function(){
+        value -= 1;
+        return value;
+      }
     }
   }
   
-  
   counter = counterFactory(10);
-  // counter.inc() // 11
-  // counter.inc() // 12
-  // counter.inc() // 13
-  // counter.dec() // 12
-  
-  
-  
-  
-  
-  
-  
-  
+  counter.inc() // 11
+  counter.inc() // 12
+  counter.inc() // 13
+  counter.dec() // 12
   
   
   /******************************************************************************\
@@ -138,26 +116,15 @@ function outer() {
   at the end of the sentence.)  */
   
   function motivation(firstname, lastname) {
-  
     var welcomeText = 'You\'re doing awesome, keep it up ';
-  
-    // code message function here.
-  
-  
-    //Uncommment this to return the value of your message function
-    //return message;
-  
+      function message(){
+        return welcomeText + firstname + " " + lastname + ".";
+      }
+    return message;
   }
   
   var greeting = motivation('Billy', 'Bob'); // 'You're doing awesome keep it up Billy Bob.
-  
-  
-  
-  
-  
-  
-  
-  
+  greeting();
   
   
   /******************************************************************************\
@@ -179,14 +146,13 @@ function outer() {
     function privateMethod(){
       return "Hi, I'm " + person.name + ", age " + person.age + " from " + person.location;
     }
-  
-    // Anything that is being returned is made public and can be invoked from
-    // outside our lexical scope
     return {
-      // Code here.
-    };
-  
-  })();
+        publicMethod: function() {
+         return privateMethod();
+       }
+ }; })();
+
+module.publicMethod();
   
   
   
@@ -200,12 +166,21 @@ function outer() {
 
   function secretNumber() {
     var secret = 143;
-
     return {
-      // Code here
+      addToSecret: function(secret1){
+        var num = secret + secret1;
+        return num;
+      },
+      takeAwayFromSecret: function(secret1){
+        var num = secret - secret1
+        return num;
+      }
     }
   }
   
+  var secNum = secretNumber();
+  secNum;
+  secNum.takeAwayFromSecret(45)
   
   
   /******************************************************************************\
@@ -230,10 +205,25 @@ function outer() {
   
   function timeOutCounter() {
     for (var i = 0; i <= 5; i++) {
-      setTimeout(function() {
-          console.log(i)
-      }, i * 1000)
+      setTimeout(function(param) {
+        return function(){
+          return console.log(param)
+        }
+      }(i), i * 1000)
     }
   }
-  timeOutCounter();
+
+  //ANOTHER SOLUTION
+  function closureFunc(index){
+    return function (){
+      console.log(index)
+    }
+  }
+  function timeOutCounter() {
+    for (var i = 0; i <= 5; i++) {
+      setTimeout(closureFunc(i), i * 1000)
+    }
+  }
+
+var time = timeOutCounter();
   
